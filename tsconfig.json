@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "declaration": false,
+    "sourceMap": false,
+    "removeComments": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "types": [
+      "node"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

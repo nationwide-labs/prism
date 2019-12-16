@@ -1,0 +1,29 @@
+{
+  "id": "cd4bb389-b5ce-45dd-9dc0-22b0b20642cf",
+  "name": "Hello",
+  "isEnabled": true,
+  "defaultNodeId": "61c0d810-630d-4a62-971b-0a2b16ab3ea2",
+  "triggers": [],
+  "utterances": [],
+  "nodes": [
+    {
+      "id": "61c0d810-630d-4a62-971b-0a2b16ab3ea2",
+      "top": 20,
+      "left": 20,
+      "type": "start",
+      "text": "default",
+      "answers": [],
+      "states": [],
+      "defaultNodeId": "cf3452fe-3b73-4489-9cb4-316d0ff097e5"
+    },
+    {
+      "id": "cf3452fe-3b73-4489-9cb4-316d0ff097e5",
+      "top": 400,
+      "left": 160,
+      "type": "output.text",
+      "answers": [],
+      "states": [],
+      "text": "Hello!"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Local Bot</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<style>
+  html,
+  body {
+    height: 100%
+  }
+
+  body {
+    margin: 0
+  }
+
+  #webchat {
+    height: 100%;
+    width: 100%;
+  }
+
+  .loader {
+    border: 16px solid #87898B;
+    border-top: 16px solid #1C57A5;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  .outer {
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+    background-color: #ececec;
+    z-index: 10;
+  }
+
+  .middle {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .inner {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<body>
+  <div id="webchat"></div>
+
+  <div class="outer" id="loader">
+    <div class="middle">
+      <div class="loader inner"></div>
+    </div>
+  </div>
+
+  <script src="/webchat.js"></script>
+
+  <script>
+    let directLine = undefined;
+    let chatInput = undefined;
+
+    let syncAttempt = false;
+    let syncOpen = false;
+
+    function openChat() {
+      directLine = window.WebChat.createDirectLine({
+        domain: '/v3/directline',
+        conversationId: '<%=conversationId%>',
+        secret: '<%=token%>'
+      });
+
+      window.WebChat.renderWebChat({
+          directLine: directLine,
+          locale: 'en-US'
+        },
+        document.getElementById('webchat')
+      );
+      document.getElementById("loader").style.display = "none";
+
+      chatInput = document.querySelector('#webchat input[data-id="webchat-sendbox-input"]');
+      if (chatInput) {
+        chatInput.focus();
+      }
+    };
+
+    function openConnection() {
+      if (syncAttempt) {
+        return;
+      }
+
+      syncAttempt = true;
+
+      if (syncOpen) {
+        return;
+      }
+      const socket = new WebSocket('<%=syncUrl%>');
+
+      socket.onopen = (e) => {
+        syncAttempt = false;
+        syncOpen = true;
+        openChat();
+      };
+
+      socket.onclose = (event) => {
+        syncAttempt = false;
+        syncOpen = false;
+
+        document.getElementById("loader").style.display = "table";
+        if (chatInput) {
+          chatInput.blur();
+        }
+
+        if (directLine) {
+          directLine.end();
+        }
+
+        setTimeout(() => {
+          openConnection();
+        }, 500);
+      };
+
+      socket.onerror = function (error) {
+        console.log(`[error] ${error.message}`);
+      };
+    }
+    openConnection();
+  </script>
+</body>
+
+</html>

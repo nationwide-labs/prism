@@ -1,0 +1,13 @@
+{
+  "speakSlow": true,
+  "isMainEnabled": false,
+  "isInterceptorEnabled": false,
+  "isIntentsEnabled": true,
+  "defaultIntentId": "cd4bb389-b5ce-45dd-9dc0-22b0b20642cf",
+  "triggerOnJoinIntentId": "cd4bb389-b5ce-45dd-9dc0-22b0b20642cf",
+  "isUtterancesEnabled": true,
+  "isCommandsEnabled": true,
+  "isCommandsHelpEnabled": true,
+  "commandPrefix": "!",
+  "isTasksEnabled": true
+}
